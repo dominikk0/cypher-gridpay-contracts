@@ -101,6 +101,22 @@ pub struct MutualSettlementProposal {
     pub nonce: u32,
 }
 
+/// Buyer inspection window state for a delivered escrow (Issue #434). Stored
+/// under `DataKey::Inspection(escrow_id)`.
+///
+/// `delivered_at` is the ledger timestamp of the delivery attestation,
+/// `inspection_deadline` is when optimistic auto-release unlocks, `extended`
+/// enforces the single-use bounded extension, and `delivery_proof_hash` pins
+/// the attested delivery evidence.
+#[derive(Clone, Debug, PartialEq)]
+#[contracttype]
+pub struct InspectionState {
+    pub delivered_at: u64,
+    pub inspection_deadline: u64,
+    pub extended: bool,
+    pub delivery_proof_hash: BytesN<32>,
+}
+
 /// Depth of the archived-record Merkle accumulator (Issue #243): up to 2^20
 /// leaves, with a frontier of 20 * 32 = 640 bytes.
 pub const MERKLE_TREE_DEPTH: u32 = 20;
